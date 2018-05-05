@@ -12,12 +12,16 @@
     function addImage() {
     	let htmlContent = '';
     	const data = JSON.parse(this.responseText);
-    	const firstImage = data.results[0];
+    	if(data && data.results && data.results[0]) {
+    		const firstImage = data.results[0];
+	     	htmlContent = `<figure>
+	    		<img src="${firstImage.urls.regular}" alt="${searchedForText}">
+	    		<figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
+	    	</figure>`;
+    	} else {
+    		htmlContent = '<div class="error-no-image">No images available</div>';
+    	}
 
-    	htmlContent = `<figure>
-    		<img src="${firstImage.urls.regular}" alt="${searchedForText}">
-    		<figcaption>${searchedForText} by ${firstImage.user.name}</figcaption>
-    	</figure>`;
 
     	responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
 
