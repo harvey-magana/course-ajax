@@ -22,9 +22,26 @@
     		htmlContent = '<div class="error-no-image">No images available</div>';
     	}
 
-
     	responseContainer.insertAdjacentHTML('afterbegin', htmlContent);
+    }
 
+	const articleRequest = new XMLHttpRequest();
+	articleRequest.onload = addArticles;
+	articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=04f4029d83c24eebb59abf48f3cd9871`);
+	articleRequest.send();
+    function addArticles() {
+    	let htmlContent = '';
+    	const data = JSON.parse(this.responseText);
+    	if (data.response && data.response.docs && data.response.docs.length > 1) {
+	    	htmlContent = '<ul>' + data.response.docs.map(article => `<li class="article">
+	    		<h2><a href="${article.web_url}">${article.headline.main}</a></h2>
+	    		<p>${article.snippet}</p>
+	    	</li>`).join('') + '</ul>';
+    	} else {
+    		htmlContent = '<div class="error-no-artices">No articles available</div>';
+    	}
+
+    	responseContainer.insertAdjacentHTML('beforeend', htmlContent);
     }
 
     form.addEventListener('submit', function (e) {
