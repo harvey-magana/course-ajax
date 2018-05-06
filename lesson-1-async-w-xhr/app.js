@@ -29,6 +29,7 @@
 	articleRequest.onload = addArticles;
 	articleRequest.open('GET', `http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchedForText}&api-key=04f4029d83c24eebb59abf48f3cd9871`);
 	articleRequest.send();
+	
     function addArticles() {
     	let htmlContent = '';
     	const data = JSON.parse(this.responseText);
